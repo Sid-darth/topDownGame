@@ -10,21 +10,24 @@ img.monster_2 = love.graphics.newImage("sprites/monster_2.png")
 -- imag.enemy = 
 -- img.projectile = 
 
-gameState = 1
+gameState = 2
 window = {}
+theta = {}
 window.width = love.graphics.getWidth() ; window.height = love.graphics.getHeight()
 require('player')
+
 
 
 end
 
 function love.update(dt)
 
+	playerUpdate(dt)
+
 end
 
 function love.draw()
-	love.graphics.draw(img.player_guard, window.width/2, window.height/2, 
-		nil,1/20,1/20,player.width/2, player.height/2)
+	love.graphics.draw(img.player_guard, player.x, player.y, get_mouseAngle(), 1/20,1/20,player.width/2, player.height/2)
 	love.graphics.print("W, H:".. window.width.. ",".. window.height)
 
 end
