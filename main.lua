@@ -1,13 +1,11 @@
 function love.load()
--- love.window.setMode(700,550)
+love.window.setMode(900,550)
 love.graphics.setBackgroundColor(0.65,0.1,0.15)
 img = {} --table with sprites listed
 img.background = love.graphics.newImage("sprites/background.png")
-img.projectile = love.graphics.newImage("sprites/projectile.png")
 
-img.monster_1 = love.graphics.newImage("sprites/monster_1.png")
-img.monster_2 = love.graphics.newImage("sprites/monster_2.png")
-img.monster_3 = love.graphics.newImage("sprites/monster_3.png")
+
+
 -- imag.enemy = 
 -- img.projectile = 
 
@@ -17,6 +15,7 @@ theta = {}
 window.width = love.graphics.getWidth() ; window.height = love.graphics.getHeight()
 require('player')
 require('projectile')
+require('monster')
 
 
 
@@ -26,6 +25,7 @@ function love.update(dt)
 
 	playerUpdate(dt)
 	projectileUpdate(dt)
+	monsterUpdate(dt)
 
 end
 
@@ -38,8 +38,12 @@ function love.draw()
 		love.graphics.draw(img.projectile, p.x, p.y, p.angle, 0.2,0.2)
 		
 	end
+
+	for i,m1 in ipairs(monsters_1) do
+		love.graphics.draw(img.monster_1, m1.x, m1.y, m1.angle + math.pi/2, 0.4, 0.4, m1.width/2, m1.height/2)
+	end
 	
-	
+	-- love.graphics.draw(img.monster_1, 100, 100, get_monsterAngle()
 	-- love.graphics.print("W, H:".. window.width.. ",".. window.height)
 
 end
@@ -48,7 +52,19 @@ function love.keypressed(key, scancode, isrepeat)
 	if key == 'escape' then
 		love.event.quit()
 	end
+
+	if key == 'return' then
+		spawn_monster()
+	end
 end
 
+function love.mousepressed(x,y,b, istouch)
+ 	if b==1 and gameState == 2 then
+ 		move_projectile()
+ 		fire = true	
+ 	end
+
+
+ end
 
 

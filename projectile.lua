@@ -1,8 +1,8 @@
 projectiles = {}
+img.projectile = love.graphics.newImage("sprites/projectile.png")
 
 
-
-fire = false
+fire = false --fire indicates launching projectile, used to activate the firing animation
 
 function projectileUpdate(dt)
 
@@ -12,6 +12,14 @@ function projectileUpdate(dt)
 		p.y = p.y + math.sin(p.angle)* p.speed*dt
 	end
 
+	--deleting projectiles when they exit screen space
+	for i = #projectiles,1,-1 do
+		local p = projectiles[i]
+		if(p.x<0) or (p.x>window.width) or (p.y<0) or (p.y>window.height) then
+			table.remove(projectiles,i)
+		end
+	end
+
 end
 
 function move_projectile()
@@ -19,7 +27,7 @@ function move_projectile()
 	projectile.img = love.graphics.newImage("sprites/projectile.png")
 	projectile.angle = get_mouseAngle()
 	projectile.x = player.x ; projectile.y = player.y  
-	projectile.speed = player.speed*3
+	projectile.speed = player.speed*2.25
 	hit = false
 
 
@@ -27,10 +35,5 @@ function move_projectile()
 end
  
 
- function love.mousepressed(x,y,b, istouch)
- 	if b==1 and gameState == 2 then
- 		move_projectile()
- 		fire = true
- 		
- 	end
- end
+ 
+
