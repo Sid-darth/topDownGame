@@ -12,10 +12,14 @@ function projectileUpdate(dt)
 		p.y = p.y + math.sin(p.angle)* p.speed*dt
 	end
 
-	--deleting projectiles when they exit screen space
+	--deleting projectiles when they exit screen space or if they hit monster
 	for i = #projectiles,1,-1 do
 		local p = projectiles[i]
 		if(p.x<0) or (p.x>window.width) or (p.y<0) or (p.y>window.height) then
+			table.remove(projectiles,i)
+		end
+
+		if p.hit == true then	--triggered in monster.lua
 			table.remove(projectiles,i)
 		end
 	end
@@ -28,7 +32,7 @@ function move_projectile()
 	projectile.angle = get_mouseAngle()
 	projectile.x = player.x ; projectile.y = player.y  
 	projectile.speed = player.speed*2.25
-	hit = false
+	projectile.hit = false
 
 
 	table.insert(projectiles, projectile)
