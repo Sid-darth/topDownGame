@@ -20,6 +20,7 @@ function monsterUpdate(dt)
 				m1.hit = true
 				p.hit = true
 				score = score+1
+				hit:play()
 			end
 
 		end
@@ -68,6 +69,12 @@ function spawn_monster()
 	end
 
 	table.insert(monsters_1, monster_1)
+end
+
+function m1Draw()
+	for i,m1 in ipairs(monsters_1) do
+		love.graphics.draw(img.monster_1, m1.x, m1.y, get_monsterAngle(m1)+math.pi/2, 0.4, 0.4, m1.width/2, m1.height/2)
+	end
 end
 
 function get_monsterAngle(monster)

@@ -26,6 +26,13 @@ function projectileUpdate(dt)
 
 end
 
+function projectileDraw()
+	for i,p in ipairs(projectiles) do
+		love.graphics.draw(img.projectile, p.x, p.y, p.angle, 0.2,0.2)
+	end
+end
+
+
 function move_projectile()
 	local projectile = {}
 	projectile.img = love.graphics.newImage("sprites/projectile.png")

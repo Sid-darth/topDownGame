@@ -1,51 +1,62 @@
 function love.load()
-love.window.setMode(900,550)
-love.graphics.setBackgroundColor(0.65,0.1,0.15)
-img = {} --table with sprites listed
-img.background = love.graphics.newImage("sprites/background.png")
+	love.window.setMode(1000, 660)
+	love.graphics.setBackgroundColor(0.65,0.1,0.15)
 
-score = 0
+	windfield = require('windfield-master/windfield') --box2D library
+	world = windfield.newWorld()
 
+	sti = require("tiled-master/sti") --library for tiled
 
+	img = {} --table with sprites listed
+	img.background = love.graphics.newImage("sprites/background.png")
 
-gameState = 1
-window = {}
-theta = {}
-window.width = love.graphics.getWidth() ; window.height = love.graphics.getHeight()
-require('player')
-require('projectile')
-require('monster')
+	score = 0
 
 
+
+	gameState = 1
+	window = {}
+	theta = {}
+	window.width = love.graphics.getWidth() ; window.height = love.graphics.getHeight()
+	require('objects')
+	require('player')
+	require('projectile')
+	require('monster')
+	require('sounds')
+	
+
+	font = love.graphics.newFont(30)
+
+	
 
 end
 
 function love.update(dt)
+	world:update(dt)
+	gameMap:update(dt)
 
 	playerUpdate(dt)
 	projectileUpdate(dt)
 	monsterUpdate(dt)
+	
 
 
 
 end
 
 function love.draw()
-	love.graphics.draw(img.background, window.width/2, window.height/2, nil, (window.width/img.background:getWidth())+1, 
-		(window.height/img.background:getWidth())+1, img.background:getWidth()/2, img.background:getHeight()/2)
-	love.graphics.draw(player.img, player.x, player.y, get_mouseAngle(), 1/20,1/20,player.width/2, player.height/2)
+	world:draw()
+	-- love.graphics.draw(img.background, window.width/2, window.height/2, nil, (window.width/img.background:getWidth())+1, 
+	-- 	(window.height/img.background:getWidth())+1, img.background:getWidth()/2, img.background:getHeight()/2)
 	
-	for i,p in ipairs(projectiles) do
-		love.graphics.draw(img.projectile, p.x, p.y, p.angle, 0.2,0.2)
-		
-	end
-
-	for i,m1 in ipairs(monsters_1) do
-		love.graphics.draw(img.monster_1, m1.x, m1.y, get_monsterAngle(m1)+math.pi/2, 0.4, 0.4, m1.width/2, m1.height/2)
-	end
+	gameMap:drawLayer(gameMap.layers["Tile Layer 1"])
+	playerDraw()
+	projectileDraw()
+	m1Draw()
 	
 	-- love.graphics.draw(img.monster_1, 100, 100, get_monsterAngle()
-	love.graphics.print("SCORE: "..score)
+	love.graphics.setFont(font)
+	love.graphics.printf("SCORE: "..score, 0, 50, love.graphics.getWidth(),"center")
 
 end
 
@@ -63,6 +74,7 @@ function love.mousepressed(x,y,b, istouch)
  	if b == 1 and gameState == 2 then
  		move_projectile()
  		fire = true	
+ 		laser_shot:play()
  	end
 
 
@@ -73,4 +85,10 @@ function love.mousepressed(x,y,b, istouch)
  	return d
  end
 
+function spawn_object(x,y,w,h)
+	local object = {}
+	object = world:newRectangleCollider(x,y,w,h)
+	object:setType('static')
 
+	table.insert(objects, object)
+end
