@@ -33,6 +33,7 @@ function monsterUpdate(dt)
 			local m1 = monsters_1[i]
 			if m1.hit == true then
 				table.remove(monsters_1,i)
+				m1.collider:destroy()
 			end
 		end
 	end

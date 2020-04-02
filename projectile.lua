@@ -4,6 +4,7 @@ img.projectile = love.graphics.newImage("sprites/projectile.png")
 
 fire = false --fire indicates launching projectile, used to activate the firing animation
 
+
 function projectileUpdate(dt)
 
 	--projectile direction
@@ -11,6 +12,8 @@ function projectileUpdate(dt)
 		p.x = p.x +  math.cos(p.angle)* p.speed*dt
 		p.y = p.y + math.sin(p.angle)* p.speed*dt
 	end
+
+	
 
 	--deleting projectiles when they exit screen space or if they hit monster
 	for i = #projectiles,1,-1 do
@@ -21,8 +24,13 @@ function projectileUpdate(dt)
 
 		if p.hit == true then	--triggered in monster.lua
 			table.remove(projectiles,i)
+		elseif p.fire==true then
+			table.remove(projectiles,i)
+			
 		end
 	end
+
+	
 
 end
 
@@ -40,6 +48,7 @@ function move_projectile()
 	projectile.x = player.x ; projectile.y = player.y  
 	projectile.speed = player.speed*2.25
 	projectile.hit = false
+	projectile.fire = false
 
 
 	table.insert(projectiles, projectile)

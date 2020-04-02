@@ -18,12 +18,12 @@ function love.load()
 	window = {}
 	theta = {}
 	window.width = love.graphics.getWidth() ; window.height = love.graphics.getHeight()
-	require('objects')
+	
 	require('player')
 	require('projectile')
 	require('monster')
 	require('sounds')
-	
+	require('objects')
 
 	font = love.graphics.newFont(30)
 
@@ -38,6 +38,7 @@ function love.update(dt)
 	playerUpdate(dt)
 	projectileUpdate(dt)
 	monsterUpdate(dt)
+	objectUpdate(dt)
 	
 
 
