@@ -1,72 +1,68 @@
 player = {}
-
-img.player_guard =  love.graphics.newImage("sprites/player_guard.png")
-img.player_fire = love.graphics.newImage("sprites/player_fire.png")
-
-
-player.img = img.player_guard
-
-player.x = window.width/2 ; player.y = window.height/2
-player.width = img.player_guard:getWidth() ; player.height = img.player_guard:getHeight()
-player.speed = 10*30
-player.collider = world:newCircleCollider(player.x, player.y,20)
 local timer = 0
 local currentTime = timer 
-function playerUpdate(dt)
-	timer = timer + dt
--- player movement
+
+function player:new()
+	img.player_guard =  love.graphics.newImage("sprites/player_guard.png")
+	img.player_fire = love.graphics.newImage("sprites/player_fire.png")
+	self.img = img.player_guard
+	self.x = window.width/2 ; self.y = window.height/2
+	self.width = img.player_guard:getWidth() ; self.height = img.player_guard:getHeight()
+	self.speed = 10*30
+	self.collider = world:newCircleCollider(self.x,self.y,20)
+end
+
+
+function player:update(dt)
+	timer = timer+dt
+
+	--player movement
 	if gameState == 2 then
 		local vectorX = 0; local vectorY = 0
 	
-		if player.y > 25 and (love.keyboard.isDown('up') or love.keyboard.isDown('w')) then
+		if self.y > 25 and (love.keyboard.isDown('up') or love.keyboard.isDown('w')) then
 			-- player.y = player.y - dt*player.speed
 			vectorY = -1
 
-		elseif player.y < (window.height -25) and (love.keyboard.isDown('down') or love.keyboard.isDown('s')) then
+		elseif self.y < (window.height -25) and (love.keyboard.isDown('down') or love.keyboard.isDown('s')) then
 			-- player.y = player.y + dt*player.speed
 			vectorY = 1
 
-		elseif player.x > 25 and (love.keyboard.isDown('left') or love.keyboard.isDown('a')) then
+		elseif self.x > 25 and (love.keyboard.isDown('left') or love.keyboard.isDown('a')) then
 			-- player.x = player.x - dt*player.speed
 			vectorX = -1
 
-		elseif player.x < (window.width - 25) and (love.keyboard.isDown('right') or love.keyboard.isDown('d')) then
+		elseif self.x < (window.width - 25) and (love.keyboard.isDown('right') or love.keyboard.isDown('d')) then
 			-- player.x = player.x + dt*player.speed
 			vectorX = 1
 
 		end
 
-		player.collider:setLinearVelocity(vectorX*player.speed, vectorY*player.speed)
-	
+		self.collider:setLinearVelocity(vectorX*player.speed, vectorY*player.speed)
 
--- shooting animation
-	
+		-- shooting animation
 		if fire == true then
 			currentTime = timer
-			player.img = img.player_fire
+			self.img = img.player_fire
 			fire = false
 		end
 
 		if fire == false and timer > (currentTime+0.1) then
-			player.img = img.player_guard
+			self.img = img.player_guard
 		end
 	end
- end
+end
 
- function playerDraw()
- 	player.x = player.collider:getX()
-	player.y = player.collider:getY()
-	
-	world:draw()
-	love.graphics.draw(player.img, player.x, player.y, 
-		get_mouseAngle(), 1/20,1/20,player.img:getWidth()/2,player.img:getHeight()/2)
+function player:draw()
+	self.x = self.collider:getX()
+	self.y = self.collider:getY()
+	love.graphics.draw(self.img,self.x,self.y,player:angle(),
+		1/20,1/20,self.width/2,self.height/2)
 end
 
 
- function get_mouseAngle()
- 	theta.mouse = math.atan2(love.mouse.getY() - player.y,
- 		love.mouse.getX() - player.x)
- 	return theta.mouse
- end
-
+function player:angle()
+	local theta = math.atan2(love.mouse.getY()-self.y,love.mouse.getX()-self.x)
+	return theta
+end
 

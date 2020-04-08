@@ -20,12 +20,14 @@ function love.load()
 	window.width = love.graphics.getWidth() ; window.height = love.graphics.getHeight()
 	
 	require('player')
+	player:new()
 	require('projectile')
 	require('monster')
 	require('sounds')
 	require('objects')
 
 	font = love.graphics.newFont(30)
+
 
 	
 
@@ -35,7 +37,7 @@ function love.update(dt)
 	world:update(dt)
 	gameMap:update(dt)
 
-	playerUpdate(dt)
+	player:update(dt)
 	projectileUpdate(dt)
 	monsterUpdate(dt)
 	objectUpdate(dt)
@@ -47,11 +49,9 @@ end
 
 function love.draw()
 	world:draw()
-	-- love.graphics.draw(img.background, window.width/2, window.height/2, nil, (window.width/img.background:getWidth())+1, 
-	-- 	(window.height/img.background:getWidth())+1, img.background:getWidth()/2, img.background:getHeight()/2)
-	
+	player:draw()
 	gameMap:drawLayer(gameMap.layers["Tile Layer 1"])
-	playerDraw()
+	
 	projectileDraw()
 	m1Draw()
 	
