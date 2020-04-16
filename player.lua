@@ -58,6 +58,7 @@ function player:draw()
 	self.y = self.collider:getY()
 	love.graphics.draw(self.img,self.x,self.y,player:angle(),
 		1/20,1/20,self.width/2,self.height/2)
+	love.graphics.print('Angle'.. player:angle()..'rad\n'.. (player:angle()*180/math.pi)..'degs')
 end
 
 

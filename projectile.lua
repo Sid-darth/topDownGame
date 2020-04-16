@@ -8,12 +8,18 @@ fire = false --fire indicates launching projectile, used to activate the firing 
 function projectileUpdate(dt)
 
 	--projectile direction
-	for i,p in ipairs(projectiles) do 
-
-		p.collider:setLinearVelocity(math.cos(p.angle)* p.speed*dt,math.sin(p.angle)* p.speed*dt)
-		
-		-- p.x = p.x +  math.cos(p.angle)* p.speed*dt
-		-- p.y = p.y + math.sin(p.angle)* p.speed*dt
+	for i,p in ipairs(projectiles) do		
+		p.x = p.x +  math.cos(p.angle)* p.speed*dt
+		p.y = p.y + math.sin(p.angle)* p.speed*dt
+		if p.deg>-90 and p.deg<0 then
+			p.collider:setPosition(p.x+5,p.y+5)
+		elseif p.deg < -90 then
+			p.collider:setPosition(p.x+5,p.y-5)
+		elseif p.deg>0 and p.deg<90 then
+			p.collider:setPosition(p.x-5,p.y+5)
+		else
+			p.collider:setPosition(p.x-5,p.y-5)
+		end
 	end
 
 	
@@ -29,7 +35,6 @@ function projectileUpdate(dt)
 			table.remove(projectiles,i)
 		elseif p.fire==true then
 			table.remove(projectiles,i)
-
 		end
 	end
 
@@ -41,8 +46,8 @@ function projectileDraw()
 	world:draw()
 
 	for i,p in ipairs(projectiles) do
-		p.x = p.collider:getX()
-		p.y = p.collider:getY()
+		-- p.x = p.collider:getX()
+		-- p.y = p.collider:getY()
 		love.graphics.draw(img.projectile, p.x, p.y, p.angle, 0.2,0.2)
 	end
 end
@@ -52,8 +57,9 @@ function move_projectile()
 	local projectile = {}
 	projectile.img = love.graphics.newImage("sprites/projectile.png")
 	projectile.angle = player:angle()
+	projectile.deg = player:angle()*180/math.pi
 	projectile.x = player.x ; projectile.y = player.y  
-	projectile.speed = player.speed*2.25
+	projectile.speed = player.speed*0.5
 	projectile.hit = false
 	projectile.fire = false
 
