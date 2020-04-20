@@ -1,17 +1,18 @@
 function love.load()
 	love.window.setMode(1000, 660)
-	love.graphics.setBackgroundColor(0.65,0.1,0.15)
+	love.graphics.setBackgroundColor(0.25,0.41,0.15)
 
 	windfield = require('windfield-master/windfield') --box2D library
 	world = windfield.newWorld()
-
+	world:addCollisionClass('Player')
+	world:addCollisionClass('Monsters_1')
+	world:addCollisionClass('Projectile')
 	sti = require("tiled-master/sti") --library for tiled
 
 	img = {} --table with sprites listed
 	img.background = love.graphics.newImage("sprites/background.png")
 
 	score = 0
-
 
 
 	gameState = 1
@@ -28,7 +29,7 @@ function love.load()
 
 	font = love.graphics.newFont(30)
 
-
+	world:setQueryDebugDrawing(false)
 	
 
 end

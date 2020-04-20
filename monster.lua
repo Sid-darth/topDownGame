@@ -6,7 +6,7 @@ img.monster_1 = love.graphics.newImage("sprites/monster_1.png")
 img.monster_2 = love.graphics.newImage("sprites/monster_2.png")
 img.monster_3 = love.graphics.newImage("sprites/monster_3.png")
 
-local spawn_timer = 2
+local spawn_timer = 3.5
 local timer = spawn_timer
 
 
@@ -25,7 +25,10 @@ function monsterUpdate(dt)
 				score = score+1
 				hit:play()
 			end
+		end
 
+		if m1.collider:enter('Player') then
+			m1.hit = true
 		end
 
 		--deleting monster if they get hit
@@ -73,7 +76,8 @@ function spawn_monster()
 		monster_1.x = -10 ; monster_1.y = math.random(0,window.height)
 	end
 	monster_1.collider = world:newCircleCollider(monster_1.x, monster_1.y, 20)
-
+	monster_1.collider:setCollisionClass('Monsters_1')
+	monster_1.collider:setObject(monster_1)
 	table.insert(monsters_1, monster_1)
 end
 
@@ -83,6 +87,7 @@ function m1Draw()
 		m1.x = m1.collider:getX()
 		m1.y = m1.collider:getY()
 		love.graphics.draw(img.monster_1, m1.x, m1.y, get_monsterAngle(m1)+math.pi/2, 0.4, 0.4, m1.width/2, m1.height/2)
+		m1.flag = 0
 	end
 end
 

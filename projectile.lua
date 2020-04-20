@@ -31,8 +31,16 @@ function projectileUpdate(dt)
 			table.remove(projectiles,i)
 		end
 
+		for j,m in ipairs(monsters_1) do
+			if p.collider:enter('Monsters_1') then
+				p.hit = true
+				
+			end
+		end
+
 		if p.hit == true then	--triggered in monster.lua
 			table.remove(projectiles,i)
+			p.collider:destroy()
 		elseif p.fire==true then
 			table.remove(projectiles,i)
 		end
@@ -59,11 +67,13 @@ function move_projectile()
 	projectile.angle = player:angle()
 	projectile.deg = player:angle()*180/math.pi
 	projectile.x = player.x ; projectile.y = player.y  
-	projectile.speed = player.speed*0.5
+	projectile.speed = player.speed*1.5
 	projectile.hit = false
 	projectile.fire = false
 
 	projectile.collider = world:newCircleCollider(projectile.x,projectile.y,2)
+	projectile.collider:setCollisionClass('Projectile')
+	projectile.collider:setObject(p)
 
 	table.insert(projectiles, projectile)
 end
