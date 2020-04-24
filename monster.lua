@@ -82,7 +82,7 @@ function spawn_monster()
 end
 
 function m1Draw()
-	world:draw()
+	-- world:draw()
 	for i,m1 in ipairs(monsters_1) do
 		m1.x = m1.collider:getX()
 		m1.y = m1.collider:getY()

@@ -51,7 +51,7 @@ function projectileUpdate(dt)
 end
 
 function projectileDraw()
-	world:draw()
+	-- world:draw()
 
 	for i,p in ipairs(projectiles) do
 		-- p.x = p.collider:getX()

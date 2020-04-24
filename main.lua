@@ -8,7 +8,7 @@ function love.load()
 	world:addCollisionClass('Monsters_1')
 	world:addCollisionClass('Projectile')
 	sti = require("tiled-master/sti") --library for tiled
-
+	
 	img = {} --table with sprites listed
 	img.background = love.graphics.newImage("sprites/background.png")
 
@@ -26,7 +26,8 @@ function love.load()
 	require('monster')
 	require('sounds')
 	require('objects')
-
+	cameraFile = require("hump/camera")
+	camera = cameraFile(player.x,player.y)
 	font = love.graphics.newFont(30)
 
 	world:setQueryDebugDrawing(false)
@@ -42,14 +43,13 @@ function love.update(dt)
 	projectileUpdate(dt)
 	monsterUpdate(dt)
 	objectUpdate(dt)
-	
-
-
-
+	camera:lookAt(player.x,player.y)
+	mouseX, mouseY = camera:mousePosition() --mouse position awareness with camera translation
 end
 
 function love.draw()
-	world:draw()
+	-- world:draw()
+	camera:attach()
 	player:draw()
 	gameMap:drawLayer(gameMap.layers["Tile Layer 1"])
 	
@@ -59,6 +59,10 @@ function love.draw()
 	-- love.graphics.draw(img.monster_1, 100, 100, get_monsterAngle()
 	love.graphics.setFont(font)
 	love.graphics.printf("SCORE: "..score, 0, 50, love.graphics.getWidth(),"center")
+	love.graphics.print('\nx:'..player.x..'y:'..player.y)
+
+
+	camera:detach()
 
 end
 

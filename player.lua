@@ -13,6 +13,7 @@ function player:new()
 	self.collider = world:newCircleCollider(self.x,self.y,20)
 	self.collider:setCollisionClass('Player')
 	self.collider:setObject(self)
+	
 end
 
 
@@ -76,7 +77,8 @@ end
 
 
 function player:angle()
-	local theta = math.atan2(love.mouse.getY()-self.y,love.mouse.getX()-self.x)
+	--local theta = math.atan2(love.mouse.getY()-self.y,love.mouse.getX()-self.x)
+	local theta = math.atan2(mouseY-self.y,mouseX-self.x)
 	return theta
 end
 
